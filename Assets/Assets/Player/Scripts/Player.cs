@@ -30,21 +30,21 @@ public class Player : MonoBehaviour
     }
 
     // Start the walk flow
-    private void startWalk()
+    private void StartWalk()
     {
         isWalking = true;
         animator.SetFloat("playerSpeed", 1.3f);
     }
 
     // stop the walk flow
-    private void stopWalk()
+    private void StopWalk()
     {
         isWalking = false;
         animator.SetFloat("playerSpeed", 0);
     }
 
     // Start the run flow
-    private void startRun()
+    private void StartRun()
     {
         isRunning = true;
         moveSpeed = 7f;
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
     }
 
     // stop the run flow
-    private void stopRun()
+    private void StopRun()
     {
         isRunning = false;
         moveSpeed = DEFAULT_SPEED;
@@ -61,22 +61,22 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        movePlayer();
-        handleRun();
+        MovePlayer();
+        HandleRun();
 
     }
 
     // Move player with correct facing
-    private void movePlayer()
+    private void MovePlayer()
     {
         float xInput = Input.GetAxis("Horizontal");
         if (xInput != 0)
         {
-            this.startWalk();
+            this.StartWalk();
         }
         else if (isWalking)
         {
-            this.stopWalk();
+            this.StopWalk();
         }
 
         playerBody.velocity = new Vector2(xInput * moveSpeed, playerBody.velocity.y);
@@ -89,19 +89,19 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Handle running
-    private void handleRun()
+    // Handle the running logic
+    private void HandleRun()
     {
         // Player should already be in walk state to run
         if (isWalking)
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                this.startRun();
+                this.StartRun();
             }
             else if (isRunning)
             {
-                this.stopRun();
+                this.StopRun();
             }
 
         }
