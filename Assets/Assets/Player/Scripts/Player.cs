@@ -7,11 +7,13 @@ public class Player : MonoBehaviour
     private Animator animator;
     private Rigidbody playerBody;
 
+    private static readonly float DEFAULT_SPEED = 5f;
+
     private bool isWalking = false;
     private bool isRunning = false;
     private bool isFacingRight = true;
 
-    public float moveSpeed = 3f;
+    public float moveSpeed = DEFAULT_SPEED;
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +43,31 @@ public class Player : MonoBehaviour
         animator.SetFloat("playerSpeed", 0);
     }
 
+    // Start the run flow
+    private void startRun()
+    {
+        isRunning = true;
+        moveSpeed = 7f;
+        animator.SetFloat("playerSpeed", 3.1f);
+    }
+
+    // stop the run flow
+    private void stopRun()
+    {
+        isRunning = false;
+        moveSpeed = DEFAULT_SPEED;
+        animator.SetFloat("playerSpeed", 1.3f);
+    }
+
     void FixedUpdate()
+    {
+        movePlayer();
+        handleRun();
+
+    }
+
+    // Move player with correct facing
+    private void movePlayer()
     {
         float xInput = Input.GetAxis("Horizontal");
         if (xInput != 0)
@@ -52,13 +78,7 @@ public class Player : MonoBehaviour
         {
             this.stopWalk();
         }
-        movePlayer(xInput);
 
-    }
-
-    // Move player with correct facing
-    private void movePlayer(float xInput)
-    {
         playerBody.velocity = new Vector2(xInput * moveSpeed, playerBody.velocity.y);
     
         if(isFacingRight && xInput < 0 || !isFacingRight && xInput > 0)
@@ -67,5 +87,24 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector2(scale.x * -1, scale.y);
             isFacingRight = xInput < 0 ? false : true;
         }
+    }
+
+    // Handle running
+    private void handleRun()
+    {
+        // Player should already be in walk state to run
+        if (isWalking)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                this.startRun();
+            }
+            else if (isRunning)
+            {
+                this.stopRun();
+            }
+
+        }
+        
     }
 }
