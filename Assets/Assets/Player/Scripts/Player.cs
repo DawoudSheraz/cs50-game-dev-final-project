@@ -5,27 +5,38 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Animator animator;
-    private Rigidbody playerBody;
+    private Rigidbody2D playerBody;
 
     private static readonly float DEFAULT_SPEED = 5f;
 
     private bool isWalking = false;
     private bool isRunning = false;
+    private bool isJumping = false;
     private bool isFacingRight = true;
 
+    [SerializeField]
+    private Transform groundTransform;
+
+    [SerializeField]
+    private float groundCheckRadius = 0.1f;
+
     public float moveSpeed = DEFAULT_SPEED;
+    public float jumpSpeed = DEFAULT_SPEED;
+
+    public LayerMask groundLayer;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        playerBody = GetComponent<Rigidbody>();
+        playerBody = GetComponent<Rigidbody2D>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
+        IsGrounded();
         
     }
 
@@ -63,6 +74,7 @@ public class Player : MonoBehaviour
     {
         MovePlayer();
         HandleRun();
+        Jump();
 
     }
 
@@ -106,5 +118,35 @@ public class Player : MonoBehaviour
 
         }
         
+    }
+
+
+    private void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        {
+            animator.SetTrigger("jump");
+            isJumping = true;
+            playerBody.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+        }
+       
+    }
+
+    // Check if the player is currently in air or not 
+    private void IsGrounded()
+    {
+
+        Collider2D collider = Physics2D.OverlapCircle(groundTransform.position, groundCheckRadius, groundLayer);
+
+        if (collider != null)
+        {
+            isJumping = false;
+            animator.ResetTrigger("jump");
+        }
+        else
+        {
+            isJumping = true;
+           
+        }
     }
 }
