@@ -127,7 +127,7 @@ public class Player : MonoBehaviour
         {
             animator.SetTrigger("jump");
             isJumping = true;
-            playerBody.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+            playerBody.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
         }
        
     }
