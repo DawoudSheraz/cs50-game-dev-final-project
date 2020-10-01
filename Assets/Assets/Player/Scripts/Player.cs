@@ -124,29 +124,34 @@ public class Player : MonoBehaviour
     private void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
-        {
+        { 
             animator.SetTrigger("jump");
+            animator.SetLayerWeight(1, 1);
             isJumping = true;
             playerBody.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
         }
        
     }
 
-    // Check if the player is currently in air or not 
+    // Check if the player has reached the ground when jumping
     private void IsGrounded()
     {
 
-        Collider2D collider = Physics2D.OverlapCircle(groundTransform.position, groundCheckRadius, groundLayer);
+        if (isJumping)
+        {
+            Collider2D collider = Physics2D.OverlapCircle(groundTransform.position, groundCheckRadius, groundLayer);
 
-        if (collider != null)
-        {
-            isJumping = false;
-            animator.ResetTrigger("jump");
-        }
-        else
-        {
-            isJumping = true;
-           
+            if (collider != null)
+            {
+                isJumping = false;
+                animator.SetLayerWeight(1, 0);
+                animator.ResetTrigger("jump");
+            }
+            else
+            {
+                isJumping = true;
+
+            }
         }
     }
 }
