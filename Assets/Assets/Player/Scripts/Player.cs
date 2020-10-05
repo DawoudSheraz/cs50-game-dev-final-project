@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = DEFAULT_SPEED;
     public float jumpSpeed = DEFAULT_SPEED;
 
-    public LayerMask groundLayer;
+    public LayerMask[] groundLayers;
 
     // Start is called before the first frame update
     void Start()
@@ -139,18 +139,19 @@ public class Player : MonoBehaviour
 
         if (isJumping)
         {
-            Collider2D collider = Physics2D.OverlapCircle(groundTransform.position, groundCheckRadius, groundLayer);
 
-            if (collider != null)
+            foreach (LayerMask groundLayer in groundLayers)
             {
-                isJumping = false;
-                animator.SetLayerWeight(1, 0);
-                animator.ResetTrigger("jump");
-            }
-            else
-            {
-                isJumping = true;
+                Collider2D collider = Physics2D.OverlapCircle(groundTransform.position, groundCheckRadius, groundLayer);
 
+                if (collider != null)
+                {
+                    isJumping = false;
+                    animator.SetLayerWeight(1, 0);
+                    animator.ResetTrigger("jump");
+                    break;
+                }
+                
             }
         }
     }
