@@ -9,13 +9,7 @@ public class CircleRotation : MonoBehaviour
 
     public float moveSpeed = 1f;
 
-    private float angle;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        angle = 0f;
-    }
+    public float angle;
 
     // Update is called once per frame
     void Update()
