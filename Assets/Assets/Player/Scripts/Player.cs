@@ -155,4 +155,22 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        
+        if(collider.gameObject.tag == "Enemy" && playerBody.velocity.y < 0 && isJumping) 
+        {
+            this.handleJumpOnEnemy();
+            Destroy(collider.gameObject);
+        }
+    }
+
+    // To be called when player can jump on certain enemies and get a small force
+    // upon landing on them
+    private void handleJumpOnEnemy()
+    {
+        playerBody.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
+    }
 }
