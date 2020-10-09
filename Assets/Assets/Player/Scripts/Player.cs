@@ -168,8 +168,8 @@ public class Player : MonoBehaviour
 
     // To be called when player can jump on certain enemies and get a small force
     // upon landing on them
-    private void HandleJumpOnEnemy(float jumpSpeed)
+    private void HandleJumpOnEnemy(float upThrust)
     {
-        playerBody.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+        playerBody.AddForce(Vector2.up * upThrust, ForceMode2D.Impulse);
     }
 }
