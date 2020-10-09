@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private bool isRunning = false;
     private bool isJumping = false;
     private bool isFacingRight = true;
+    private bool isInvincible = false;
 
     [SerializeField]
     private Transform groundTransform;
@@ -159,10 +160,18 @@ public class Player : MonoBehaviour
     {
         GameObject gameObject = collider.gameObject;
         
-        if(gameObject.tag == "Enemy" && playerBody.velocity.y < 0 && isJumping)
-        { 
-            this.HandleJumpOnEnemy(gameObject.GetComponent<JumpableEnemy>().verticalThrust);
-            Destroy(collider.gameObject);
+        if(gameObject.tag == "Enemy")
+        {
+            if (playerBody.velocity.y < 0 && isJumping)
+            {
+                this.HandleJumpOnEnemy(gameObject.GetComponent<JumpableEnemy>().verticalThrust);
+                Destroy(collider.gameObject);
+            }
+            else if(!isInvincible)
+            {
+                isInvincible = true;
+                StartCoroutine("HandleEnemyCollision");
+            }
         }
     }
 
@@ -171,5 +180,22 @@ public class Player : MonoBehaviour
     private void HandleJumpOnEnemy(float upThrust)
     {
         playerBody.AddForce(Vector2.up * upThrust, ForceMode2D.Impulse);
+    }
+
+    // Coroutine to handle enemy collision behaviors
+    IEnumerator HandleEnemyCollision()
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        Color original = renderer.material.color;
+
+        for (int i = 0; i < 2; i++)
+        {
+            renderer.material.color = new Color(255, 255, 255);
+            yield return new WaitForSeconds(.1f);
+            renderer.material.color = original;
+            yield return new WaitForSeconds(.1f);
+        }
+        isInvincible = false;
+
     }
 }
