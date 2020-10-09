@@ -136,10 +136,8 @@ public class Player : MonoBehaviour
     // Check if the player has reached the ground when jumping
     private void IsGrounded()
     {
-
         if (isJumping)
         {
-
             foreach (LayerMask groundLayer in groundLayers)
             {
                 Collider2D collider = Physics2D.OverlapCircle(groundTransform.position, groundCheckRadius, groundLayer);
@@ -151,7 +149,7 @@ public class Player : MonoBehaviour
                     animator.ResetTrigger("jump");
                     break;
                 }
-                
+
             }
         }
     }
@@ -159,18 +157,19 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
+        GameObject gameObject = collider.gameObject;
         
-        if(collider.gameObject.tag == "Enemy" && playerBody.velocity.y < 0 && isJumping) 
-        {
-            this.handleJumpOnEnemy();
+        if(gameObject.tag == "Enemy" && playerBody.velocity.y < 0 && isJumping)
+        { 
+            this.HandleJumpOnEnemy(gameObject.GetComponent<JumpableEnemy>().verticalThrust);
             Destroy(collider.gameObject);
         }
     }
 
     // To be called when player can jump on certain enemies and get a small force
     // upon landing on them
-    private void handleJumpOnEnemy()
+    private void HandleJumpOnEnemy(float jumpSpeed)
     {
-        playerBody.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
+        playerBody.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
     }
 }
