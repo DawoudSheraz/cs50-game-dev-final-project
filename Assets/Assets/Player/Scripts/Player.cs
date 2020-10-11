@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private bool isRunning = false;
     private bool isJumping = false;
     private bool isFacingRight = true;
+    private bool isInvincible = false;
 
     [SerializeField]
     private Transform groundTransform;
@@ -136,10 +137,8 @@ public class Player : MonoBehaviour
     // Check if the player has reached the ground when jumping
     private void IsGrounded()
     {
-
         if (isJumping)
         {
-
             foreach (LayerMask groundLayer in groundLayers)
             {
                 Collider2D collider = Physics2D.OverlapCircle(groundTransform.position, groundCheckRadius, groundLayer);
@@ -151,8 +150,52 @@ public class Player : MonoBehaviour
                     animator.ResetTrigger("jump");
                     break;
                 }
-                
+
             }
         }
+    }
+
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        GameObject gameObject = collider.gameObject;
+        
+        if(gameObject.tag == "Enemy")
+        {
+            if (playerBody.velocity.y < 0 && isJumping)
+            {
+                this.HandleJumpOnEnemy(gameObject.GetComponent<JumpableEnemy>().verticalThrust);
+                Destroy(collider.gameObject);
+            }
+            else if(!isInvincible)
+            {
+                isInvincible = true;
+                StartCoroutine("HandleEnemyCollision");
+            }
+        }
+    }
+
+    // To be called when player can jump on certain enemies and get a small force
+    // upon landing on them
+    private void HandleJumpOnEnemy(float upThrust)
+    {
+        playerBody.AddForce(Vector2.up * upThrust, ForceMode2D.Impulse);
+    }
+
+    // Coroutine to handle enemy collision behaviors
+    IEnumerator HandleEnemyCollision()
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        Color original = renderer.material.color;
+
+        for (int i = 0; i < 2; i++)
+        {
+            renderer.material.color = new Color(255, 255, 255, 0.5f);
+            yield return new WaitForSeconds(.2f);
+            renderer.material.color = original;
+            yield return new WaitForSeconds(.2f);
+        }
+        isInvincible = false;
+
     }
 }
