@@ -190,10 +190,10 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < 2; i++)
         {
-            renderer.material.color = new Color(255, 255, 255);
-            yield return new WaitForSeconds(.1f);
+            renderer.material.color = new Color(255, 255, 255, 0.5f);
+            yield return new WaitForSeconds(.2f);
             renderer.material.color = original;
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.2f);
         }
         isInvincible = false;
 
