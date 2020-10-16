@@ -19,8 +19,8 @@ public class Pickup : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-		// trigger coin pickup function if a helicopter collides with this
-		//other.transform.parent.GetComponent<Player>().PickupCoin();
+        // trigger coin pickup function if a helicopter collides with this
+        //other.transform.parent.GetComponent<Player>().PickupCoin();
 		Destroy(gameObject);
 	}
 }

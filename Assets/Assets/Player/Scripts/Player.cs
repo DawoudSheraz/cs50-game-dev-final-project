@@ -169,8 +169,7 @@ public class Player : MonoBehaviour
             }
             else if(!isInvincible)
             {
-                isInvincible = true;
-                StartCoroutine("HandleEnemyCollision");
+                GrantTemporaryInvincibility(0.8f);   
             }
         }
     }
@@ -182,20 +181,27 @@ public class Player : MonoBehaviour
         playerBody.AddForce(Vector2.up * upThrust, ForceMode2D.Impulse);
     }
 
-    // Coroutine to handle enemy collision behaviors
-    IEnumerator HandleEnemyCollision()
+    // Coroutine to make player temporary invincible
+    IEnumerator MakeTemporaryInvincible(float duration)
     {
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
         Color original = renderer.material.color;
 
-        for (int i = 0; i < 2; i++)
+        isInvincible = true;
+        for (float i = 0f; i < duration; i += 0.4f)
         {
             renderer.material.color = new Color(255, 255, 255, 0.5f);
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(0.2f);
             renderer.material.color = original;
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(0.2f);
         }
         isInvincible = false;
 
+    }
+
+    // Wrapper to call coroutine
+    public void GrantTemporaryInvincibility(float duration)
+    {
+        StartCoroutine("MakeTemporaryInvincible", duration);
     }
 }
