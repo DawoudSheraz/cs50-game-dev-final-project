@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     public float moveSpeed = DEFAULT_SPEED;
     public float jumpSpeed = DEFAULT_SPEED;
 
+    public float score = 0;
+
     public LayerMask[] groundLayers;
 
     // Start is called before the first frame update
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerBody = GetComponent<Rigidbody2D>();
+        score = 0;
         
     }
 
@@ -204,4 +207,10 @@ public class Player : MonoBehaviour
     {
         StartCoroutine("MakeTemporaryInvincible", duration);
     }
+
+    public void IncrementScore(float value)
+    {
+        score += value;
+    }
 }
+
