@@ -7,6 +7,9 @@ public class Pickup : MonoBehaviour {
 
 	public float pickupScore;
 
+	// Sound to play upon pickup
+	public AudioSource pickupAudio;
+
 
 	void Update () {
 
@@ -19,7 +22,10 @@ public class Pickup : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+		pickupAudio.Play();
 		collision.gameObject.GetComponent<Player>().IncrementScore(pickupScore);
-        Destroy(gameObject);
-	}
+
+		// Don't destroy until the audio has played
+        Destroy(gameObject, pickupAudio.clip.length);
+    }
 }
