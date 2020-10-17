@@ -28,6 +28,9 @@ public class Player : MonoBehaviour
 
     public LayerMask[] groundLayers;
 
+    public AudioSource audioSource;
+    public AudioClip[] sounds;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +75,14 @@ public class Player : MonoBehaviour
         isRunning = false;
         moveSpeed = DEFAULT_SPEED;
         animator.SetFloat("playerSpeed", 1.3f);
+    }
+
+
+    private void PlayJumpSound()
+    {
+        audioSource.Stop();
+        audioSource.clip = sounds[0];
+        audioSource.Play();
     }
 
     void FixedUpdate()
@@ -133,6 +144,7 @@ public class Player : MonoBehaviour
             animator.SetLayerWeight(1, 1);
             isJumping = true;
             playerBody.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
+            PlayJumpSound();
         }
        
     }
