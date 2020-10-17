@@ -25,7 +25,9 @@ public class Pickup : MonoBehaviour {
 		pickupAudio.Play();
 		collision.gameObject.GetComponent<Player>().IncrementScore(pickupScore);
 
+		// Disable rendering to give effect that object has been removed
+		GetComponent<SpriteRenderer>().enabled = false;
 		// Don't destroy until the audio has played
-        Destroy(gameObject, pickupAudio.clip.length);
+		Destroy(gameObject, pickupAudio.clip.length);
     }
 }

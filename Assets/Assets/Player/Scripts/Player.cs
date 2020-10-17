@@ -174,26 +174,19 @@ public class Player : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         GameObject gameObject = collider.gameObject;
-        
-        if(gameObject.tag == "Enemy")
-        {
-            if (playerBody.velocity.y < 0 && isJumping)
-            {
-                this.HandleJumpOnEnemy(gameObject.GetComponent<JumpableEnemy>().verticalThrust);
-                Destroy(collider.gameObject);
-            }
-            else if(!isInvincible)
-            {
-                GrantTemporaryInvincibility(0.8f);   
-            }
-        }
     }
 
     // To be called when player can jump on certain enemies and get a small force
     // upon landing on them
-    private void HandleJumpOnEnemy(float upThrust)
+    public void HandleJumpOnEnemy(float upThrust)
     {
         playerBody.AddForce(Vector2.up * upThrust, ForceMode2D.Impulse);
+    }
+
+    // Check if player is falling
+    public bool IsPlayerDescending()
+    {
+        return playerBody.velocity.y < 0;
     }
 
     // Coroutine to make player temporary invincible
@@ -223,6 +216,16 @@ public class Player : MonoBehaviour
     public void IncrementScore(float value)
     {
         score += value;
+    }
+
+    public bool IsPlayerJumping()
+    {
+        return isJumping;
+    }
+
+    public bool IsPlayerInvincible()
+    {
+        return isInvincible;
     }
 }
 
