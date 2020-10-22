@@ -1,33 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Pickup : MonoBehaviour {
+public class Pickup : MonoBehaviour
+{
 
-	public bool isRotating;
+    public bool isRotating;
 
-	public float pickupScore;
+    public float pickupScore;
 
-	// Sound to play upon pickup
-	public AudioSource pickupAudio;
+    // Sound to play upon pickup
+    public AudioSource pickupAudio;
 
 
-	void Update () {
+    void Update()
+    {
 
-		if (isRotating)
-		{
-			transform.Rotate(0, 5f, 0, Space.World);
-		}
-	}
+        if (isRotating)
+        {
+            transform.Rotate(0, 5f, 0, Space.World);
+        }
+    }
 
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-		pickupAudio.Play();
-		collision.gameObject.GetComponent<Player>().IncrementScore(pickupScore);
+        pickupAudio.Play();
+        collision.gameObject.GetComponent<Player>().IncrementScore(pickupScore);
 
-		// Disable rendering to give effect that object has been removed
-		GetComponent<SpriteRenderer>().enabled = false;
-		// Don't destroy until the audio has played
-		Destroy(gameObject, pickupAudio.clip.length);
+        // Disable rendering to give effect that object has been removed
+        GetComponent<SpriteRenderer>().enabled = false;
+        // Don't destroy until the audio has played
+        Destroy(gameObject, pickupAudio.clip.length);
     }
 }
