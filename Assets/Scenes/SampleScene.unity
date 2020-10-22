@@ -613,6 +613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   verticalThrust: 10
+  invincibilityTime: 1
   killSound: {fileID: 819853719}
 --- !u!82 &819853719
 AudioSource:

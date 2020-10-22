@@ -7,6 +7,9 @@ public class JumpableEnemy : MonoBehaviour
     // The force applied upward when jumped on
     public float verticalThrust;
 
+    // Invincibilty granted to the player if player does not jump on but collides directly with enemy
+    public float invincibilityTime;
+
     public AudioSource killSound;
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -26,7 +29,7 @@ public class JumpableEnemy : MonoBehaviour
             }
             else if (!player.IsPlayerInvincible())
             {
-                player.GrantTemporaryInvincibility(0.8f);
+                player.GrantTemporaryInvincibility(invincibilityTime);
             }
         }
     }
