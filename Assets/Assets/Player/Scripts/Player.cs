@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private Animator animator;
-    private Rigidbody2D playerBody;
-
     private static readonly float DEFAULT_SPEED = 5f;
 
+    private Animator animator;
+    private Rigidbody2D playerBody;
     private bool isWalking = false;
     private bool isRunning = false;
     private bool isJumping = false;
@@ -23,15 +22,13 @@ public class Player : MonoBehaviour
 
     public float moveSpeed = DEFAULT_SPEED;
     public float jumpSpeed = DEFAULT_SPEED;
-
     public float score = 0;
 
     public LayerMask[] groundLayers;
-
     public AudioSource audioSource;
     public AudioClip[] sounds;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -112,7 +109,7 @@ public class Player : MonoBehaviour
         {
             Vector2 scale = transform.localScale;
             transform.localScale = new Vector2(scale.x * -1, scale.y);
-            isFacingRight = xInput < 0 ? false : true;
+            isFacingRight = xInput >= 0;
         }
     }
 
@@ -170,11 +167,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        GameObject gameObject = collider.gameObject;
-    }
 
     // To be called when player can jump on certain enemies and get a small force
     // upon landing on them
