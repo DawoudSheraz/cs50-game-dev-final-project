@@ -97,7 +97,13 @@ public class Pumpkin : MonoBehaviour
             BoxCollider2D collider = collision.collider.GetComponent<BoxCollider2D>();
 
             // If moving right and just about to reach the end of ground, flip
-            if (isFacingRight && (RightTransform.position.x >= (collider.size.x + collider.offset.x/2)))
+            if (isFacingRight && (RightTransform.position.x >= (collider.transform.position.x + collider.size.x + collider.offset.x)))
+            {
+                Flip();
+            }
+
+            // If moving left and about to reach the end, flip
+            else if(!isFacingRight && RightTransform.position.x < collider.transform.position.x)
             {
                 Flip();
             }
