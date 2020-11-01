@@ -53,14 +53,14 @@ public class Pumpkin : MonoBehaviour
     private void StartRun()
     {
         isRunning = true;
-        moveSpeed = 7f;
+        moveSpeed = 5f;
         animator.SetFloat("speed", 2.1f);
     }
 
     private void StopRun()
     {
         isRunning = false;
-        moveSpeed = 7f;
+        moveSpeed = 2f;
         animator.SetFloat("speed", 1.1f);
     }
 
@@ -104,6 +104,23 @@ public class Pumpkin : MonoBehaviour
                 Flip();
             }
 
+        }
+    }
+
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            StartRun();
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            StopRun();
         }
     }
 }
