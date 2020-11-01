@@ -5,7 +5,6 @@ using UnityEngine;
 public class Pumpkin : MonoBehaviour
 {
 
-
     /*
      * Left & Right transforms to check enemy bounds on a ground platform
      */
@@ -27,15 +26,13 @@ public class Pumpkin : MonoBehaviour
     public float moveSpeed = 7f;
 
 
-    private Vector3 oldPosition;
-
     void Start()
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    
+
     void FixedUpdate()
     {
         Move();
@@ -69,8 +66,8 @@ public class Pumpkin : MonoBehaviour
 
 
     private void Move()
-    { 
-        rigidBody.velocity = new Vector2((isFacingRight ? 1 : -1)  * moveSpeed, rigidBody.velocity.y);
+    {
+        rigidBody.velocity = new Vector2((isFacingRight ? 1 : -1) * moveSpeed, rigidBody.velocity.y);
 
         if (!isWalking)
         {
@@ -78,13 +75,12 @@ public class Pumpkin : MonoBehaviour
             StartWalk();
         }
 
-        oldPosition = transform.position;
     }
 
     private void Flip()
     {
         Vector2 scale = transform.localScale;
-        transform.localScale = new Vector2(-1 * scale.x , scale.y);
+        transform.localScale = new Vector2(-1 * scale.x, scale.y);
         isFacingRight = !isFacingRight;
     }
 
@@ -92,7 +88,7 @@ public class Pumpkin : MonoBehaviour
     void OnCollisionStay2D(Collision2D collision)
     {
 
-        if(collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             BoxCollider2D collider = collision.collider.GetComponent<BoxCollider2D>();
 
@@ -103,11 +99,11 @@ public class Pumpkin : MonoBehaviour
             }
 
             // If moving left and about to reach the end, flip
-            else if(!isFacingRight && RightTransform.position.x < collider.transform.position.x)
+            else if (!isFacingRight && RightTransform.position.x < collider.transform.position.x)
             {
                 Flip();
             }
-            
+
         }
     }
 }
