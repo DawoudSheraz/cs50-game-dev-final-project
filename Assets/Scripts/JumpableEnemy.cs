@@ -23,9 +23,9 @@ public class JumpableEnemy : MonoBehaviour
                 killSound.Play();
 
                 // Disable rendering to give effect that object has been removed
-                GetComponent<SpriteRenderer>().enabled = false;
+                GetComponentInParent<SpriteRenderer>().enabled = false;
                 // Don't destroy until the audio has played
-                Destroy(gameObject, killSound.clip.length);
+                Destroy(transform.parent.gameObject, killSound.clip.length);
             }
             else if (!player.IsPlayerInvincible())
             {
