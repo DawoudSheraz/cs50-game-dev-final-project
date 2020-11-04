@@ -20,6 +20,7 @@ public class Pumpkin : MonoBehaviour
 
     private bool isWalking = false;
     private bool isRunning = false;
+    private bool isPlayerInSight = false;
 
     public bool isFacingRight;
 
@@ -87,8 +88,8 @@ public class Pumpkin : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-
-        if (collision.gameObject.CompareTag("Ground"))
+        // Flip only if the player is not in sight
+        if (collision.gameObject.CompareTag("Ground") && !isPlayerInSight)
         {
             BoxCollider2D collider = collision.collider.GetComponent<BoxCollider2D>();
 
@@ -105,14 +106,15 @@ public class Pumpkin : MonoBehaviour
             }
 
         }
-    }
+
+        }
 
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            StartRun();
+            RunAfterPlayer(collision.gameObject.transform);
         }
     }
 
@@ -120,7 +122,33 @@ public class Pumpkin : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            isPlayerInSight = false;
             StopRun();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        // If Player is in sight, keep running after it
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            RunAfterPlayer(collision.gameObject.transform);
+        }
+    }
+
+    // Operations to peform when player in sight
+    private void RunAfterPlayer(Transform playerTransform)
+    {
+        isPlayerInSight = true;
+
+        if (!isRunning)
+        {
+            StartRun();
+        }
+        // If player is behind the enemy, flip
+        if (isFacingRight && playerTransform.position.x < transform.position.x || !isFacingRight && playerTransform.position.x > transform.position.x)
+        {
+            Flip();
         }
     }
 }
