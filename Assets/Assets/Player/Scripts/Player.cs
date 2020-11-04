@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
     private void StartRun()
     {
         isRunning = true;
-        moveSpeed = 7f;
+        moveSpeed = 9f;
         animator.SetFloat("playerSpeed", 3.1f);
     }
 
