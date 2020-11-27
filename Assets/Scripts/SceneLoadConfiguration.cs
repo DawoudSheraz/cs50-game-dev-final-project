@@ -12,9 +12,11 @@ public class SceneLoadConfiguration : MonoBehaviour
     [SerializeField]
     private GameObject playerPrefab;
 
-    void Start()
+    // Awake is called before Start & player should be created(if not already)
+    // for CameraTrack.cs script to detect the player object.
+    void Awake()
     {
-        Player player = (Player)GameObject.FindObjectOfType<Player>();
+        Player player = FindObjectOfType<Player>();
 
         if (player)
         {
