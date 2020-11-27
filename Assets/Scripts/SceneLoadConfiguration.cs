@@ -22,6 +22,7 @@ public class SceneLoadConfiguration : MonoBehaviour
         {
             print("Player object is present in the scene, Moving the object to initialization coordinates");
             player.transform.position = playerInitializationCoordinates;
+            player.SceneStartConfiguration();
         }
         else
         {
