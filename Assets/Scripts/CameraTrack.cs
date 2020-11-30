@@ -17,8 +17,8 @@ public class CameraTrack : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        playerTransform = GameObject.Find("Player").transform;
+    { 
+        playerTransform = FindObjectOfType<Player>().transform;
     }
 
     // LateUpdate so that camera update is done after all Update() calls have been made

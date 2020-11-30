@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -87,6 +88,12 @@ public class Player : MonoBehaviour
         MovePlayer();
         HandleRun();
         Jump();
+
+        // Debug code to change scene to verify player is not destroyed
+        if (Input.GetKey("return"))
+        {
+            SceneManager.LoadScene(1);
+        }
 
     }
 
@@ -218,6 +225,18 @@ public class Player : MonoBehaviour
     public bool IsPlayerInvincible()
     {
         return isInvincible;
+    }
+
+    // The configuration to set when a new scene is loaded
+    // while retaining some previous values
+    public void SceneStartConfiguration()
+    {
+        isJumping = false;
+
+        StopRun();
+        StopWalk();
+        animator.SetLayerWeight(1, 0);
+        animator.ResetTrigger("jump");
     }
 }
 
