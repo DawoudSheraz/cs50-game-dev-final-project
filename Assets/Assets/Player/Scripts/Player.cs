@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private bool isWalking = false;
     private bool isRunning = false;
     private bool isJumping = false;
+    private bool isLanding = false;
+    private bool onGround = false;
     private bool isFacingRight = true;
     private bool isInvincible = false;
 
@@ -30,8 +32,9 @@ public class Player : MonoBehaviour
     public AudioClip[] sounds;
 
 
-    void Start()
+    void Awake()
     {
+        // Setup components in Awake so that Scene configuration(also using Awake) can call player methods using these components
         animator = GetComponent<Animator>();
         playerBody = GetComponent<Rigidbody2D>();
         score = 0;
@@ -42,7 +45,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         IsGrounded();
-        
+        CheckIsPlayerLanding();
     }
 
     // Start the walk flow
@@ -82,6 +85,30 @@ public class Player : MonoBehaviour
         audioSource.clip = sounds[0];
         audioSource.Play();
     }
+
+    // Start of Private Wrappers on different animator triggers
+    private void SetJumpTrigger()
+    {
+        animator.SetTrigger("jump");
+    }
+
+    private void ResetJumpTrigger()
+    {
+        animator.ResetTrigger("jump");
+    }
+
+
+    private void SetLandingTrigger()
+    {
+       animator.SetTrigger("landing");
+    }
+
+    private void ResetLandingTrigger()
+    {
+        animator.ResetTrigger("landing");
+    }
+    // End of private Wrappers on different animator triggers
+
 
     void FixedUpdate()
     {
@@ -139,24 +166,37 @@ public class Player : MonoBehaviour
         
     }
 
+    private void CheckIsPlayerLanding()
+    {
+        // If player is falling and landing and ground booleans are unset
+        if (!onGround && IsPlayerDescending() && !isLanding )
+        {
+            isLanding = true;
+            animator.SetLayerWeight(1, 1);
+            SetLandingTrigger();
+        }
+    }
+
 
     private void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
-        { 
-            animator.SetTrigger("jump");
+        {
+            SetJumpTrigger();
             animator.SetLayerWeight(1, 1);
             isJumping = true;
+            isLanding = false;
+            onGround = false;
             playerBody.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
             PlayJumpSound();
         }
        
     }
 
-    // Check if the player has reached the ground when jumping
+    // Check if the player is on ground
     private void IsGrounded()
     {
-        if (isJumping)
+        if (!onGround)
         {
             foreach (LayerMask groundLayer in groundLayers)
             {
@@ -165,9 +205,13 @@ public class Player : MonoBehaviour
                 if (collider != null)
                 {
                     isJumping = false;
+                    isLanding = false;
+                    onGround = true;
                     animator.SetLayerWeight(1, 0);
-                    animator.ResetTrigger("jump");
+                    ResetJumpTrigger();
+                    ResetLandingTrigger();
                     break;
+
                 }
 
             }
@@ -236,7 +280,17 @@ public class Player : MonoBehaviour
         StopRun();
         StopWalk();
         animator.SetLayerWeight(1, 0);
-        animator.ResetTrigger("jump");
+        ResetJumpTrigger();
+        ResetLandingTrigger();
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        // Whenever leave a tough surface, check if player is falling off the edge
+        if(IsPlayerDescending() && onGround)
+        {
+            onGround = false;
+        }
     }
 }
 
