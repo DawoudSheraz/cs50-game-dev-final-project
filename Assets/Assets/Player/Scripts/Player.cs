@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     private static readonly float DEFAULT_SPEED = 5f;
+    private static readonly int MAX_HEALTH = 10;
 
     private Animator animator;
     private Rigidbody2D playerBody;
@@ -19,6 +20,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private Transform groundTransform;
+
+    [SerializeField]
+    private HealthBar healthBar;
 
     [SerializeField]
     private float groundCheckRadius = 0.1f;
@@ -37,6 +41,8 @@ public class Player : MonoBehaviour
         // Setup components in Awake so that Scene configuration(also using Awake) can call player methods using these components
         animator = GetComponent<Animator>();
         playerBody = GetComponent<Rigidbody2D>();
+        healthBar.SetMaxValue(MAX_HEALTH);
+        healthBar.SetValue(MAX_HEALTH);
         score = 0;
         
     }
