@@ -14,6 +14,8 @@ public class JumpableEnemy : MonoBehaviour
     // Score given to user after the enemy kill
     public float killScore = 0f;
 
+    public int playerDamage;
+
     public AudioSource killSound;
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -47,6 +49,7 @@ public class JumpableEnemy : MonoBehaviour
             }
             else if (!player.IsPlayerInvincible())
             {
+                player.TakeDamage(playerDamage);
                 player.GrantTemporaryInvincibility(invincibilityTime);
             }
         }

@@ -20,11 +20,11 @@ public class HealthBar : MonoBehaviour
     {
         slider.value = value;
 
-        if (slider.normalizedValue <= 0.2)
+        if (slider.normalizedValue <= 0.3)
         {
             fillImage.color = Color.red;
         }
-        else if(slider.normalizedValue <= 0.4)
+        else if(slider.normalizedValue <= 0.5)
         {
             fillImage.color = Color.yellow;
         }

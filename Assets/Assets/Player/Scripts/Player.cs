@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = DEFAULT_SPEED;
     public float jumpSpeed = DEFAULT_SPEED;
     public float score = 0;
+    public int currentHealth;
 
     public LayerMask[] groundLayers;
     public AudioSource audioSource;
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
         playerBody = GetComponent<Rigidbody2D>();
         healthBar.SetMaxValue(MAX_HEALTH);
         healthBar.SetValue(MAX_HEALTH);
+        currentHealth = MAX_HEALTH;
         score = 0;
         
     }
@@ -260,6 +262,13 @@ public class Player : MonoBehaviour
     public void GrantTemporaryInvincibility(float duration)
     {
         StartCoroutine("MakeTemporaryInvincible", duration);
+    }
+
+    // Reduce health and update health bar
+    public void TakeDamage(int value)
+    {
+        currentHealth = Mathf.Max(currentHealth - value, 0);
+        healthBar.SetValue(currentHealth);
     }
 
     public void IncrementScore(float value)

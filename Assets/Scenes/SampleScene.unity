@@ -543,6 +543,10 @@ PrefabInstance:
       propertyPath: killScore
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1450615247, guid: fe6d38de8644041909db44be7542af92, type: 3}
+      propertyPath: playerDamage
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5456411251869256657, guid: fe6d38de8644041909db44be7542af92,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -606,7 +610,7 @@ PrefabInstance:
     - target: {fileID: 5456411251869256660, guid: fe6d38de8644041909db44be7542af92,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe6d38de8644041909db44be7542af92, type: 3}
