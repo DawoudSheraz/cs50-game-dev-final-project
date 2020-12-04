@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     private static readonly float DEFAULT_SPEED = 5f;
+    private static readonly int MAX_HEALTH = 10;
 
     private Animator animator;
     private Rigidbody2D playerBody;
@@ -21,11 +22,15 @@ public class Player : MonoBehaviour
     private Transform groundTransform;
 
     [SerializeField]
+    private HealthBar healthBar;
+
+    [SerializeField]
     private float groundCheckRadius = 0.1f;
 
     public float moveSpeed = DEFAULT_SPEED;
     public float jumpSpeed = DEFAULT_SPEED;
     public float score = 0;
+    public int currentHealth;
 
     public LayerMask[] groundLayers;
     public AudioSource audioSource;
@@ -37,6 +42,9 @@ public class Player : MonoBehaviour
         // Setup components in Awake so that Scene configuration(also using Awake) can call player methods using these components
         animator = GetComponent<Animator>();
         playerBody = GetComponent<Rigidbody2D>();
+        healthBar.SetMaxValue(MAX_HEALTH);
+        healthBar.SetValue(MAX_HEALTH);
+        currentHealth = MAX_HEALTH;
         score = 0;
         
     }
@@ -254,6 +262,13 @@ public class Player : MonoBehaviour
     public void GrantTemporaryInvincibility(float duration)
     {
         StartCoroutine("MakeTemporaryInvincible", duration);
+    }
+
+    // Reduce health and update health bar
+    public void TakeDamage(int value)
+    {
+        currentHealth = Mathf.Max(currentHealth - value, 0);
+        healthBar.SetValue(currentHealth);
     }
 
     public void IncrementScore(float value)
